@@ -1,4 +1,4 @@
-# 使用
+# 使用文档
 
 ## 自定义组件内部布局
 
@@ -15,7 +15,7 @@
 
 ```jsx
 const customButtonLayout = ({ Icon, Text }) => {
-  return <><Icon /><Text /><Icon /></>
+  return <div><Icon /><Text /><Icon /><div/>
 }
 
 <ChonButton layout={customButtonLayout} />
@@ -24,17 +24,17 @@ const customButtonLayout = ({ Icon, Text }) => {
 - 定义布局并注册到全局
 
 ```jsx
-// `layouts.jsx` 文件
+// `layouts.jsx` 配置文件
 
 // 函数方式（用于简单的布局）
 const globalButtonLayout = ({ Icon, Text }) => {
-  return <><Icon /><Text /></>
+  return <div><Icon /><Text /></div>
 }
 
 // 类方式（用于复杂的布局）
 class AnotherButtonLayout extends ChonButtonLayout {
   compose({ Icon, Text }) {
-    return <><Icon /><Text /></>
+    return <div><Icon /><Text /></div>
   }
 }
 
@@ -50,4 +50,101 @@ export default layouts;
 
 <ChonButton layout='first' />
 <ChonButton layout='second' />
+```
+
+## 使用主题
+
+- 静态主题
+
+```js
+// `themes.js` 配置文件
+export default {
+  default: {
+    primaryColor: '#EEEEEE',
+    accentColor: '#FFFFFF',
+    baseBorderRadius: '3px',
+    basePadding: '10px',
+    baseFontSize: '0.8rem',
+  }
+}
+```
+
+- 动态主题
+
+```js
+// `theme.js` 配置文件
+export default {
+  default: {
+    primaryColor: '#000'，
+    accentColor: '#666',
+    baseBorderRadius: '5px',
+    basePadding: '10px',
+    baseFontSize: '0.8rem',
+  },
+  blue: {
+    primaryColor: '#4285F4',
+    accentColor: '#FBBC05',
+  },
+  green: {
+    primaryColor: '#34A853',
+    accentColor: '#EA4335',
+  }
+}
+
+// 在运行时动态切换主题
+
+Chon.activeTheme('blue');
+Chon.activeTheme('blue');
+```
+
+- 自定义取色方案
+
+```js
+class CustomColorScheme extends ChonColorScheme {
+  
+  // 父类中的构造函数
+  // constructor(primaryColor, accentColor) {
+  //   this.primaryColor = primaryColor;
+  //   this.accentColor = accentColor;
+  // }
+
+  // 自定义一些全局颜色获取方法
+  getDarkenPrimaryColor() {
+    // darken() 为用户自定义的颜色计算函数
+    return darken(this.primaryColor);
+  }
+  
+  getLightenPrimaryColor() {
+    // lighten() 为用户自定义颜色计算函数
+    return lighten(this.primaryColor);
+  }
+
+  getBackgroundColor() {
+    return '#FFF';
+  }
+
+  getTextColor() {
+    return '#000';
+  }
+
+  getTitleColor() {
+    return this.primaryColor;
+  }
+
+  // ...
+
+  // 自定义组件相关颜色获取方法
+  getButtonBackground() {
+    return this.primaryColor;
+  }
+
+  getButtonTextColor() {
+    return '#FFF';
+  }
+
+  // ...
+}
+
+// 激活颜色方案
+Chon.active(CustomColorScheme);
 ```
