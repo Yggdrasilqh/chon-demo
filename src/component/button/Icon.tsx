@@ -1,17 +1,18 @@
 import * as React from "react";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon as _FontAwesomeIcon, Props } from '@fortawesome/react-fontawesome'
-import style from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CommonProps } from "../common/common-props";
+import { switchLayout } from "../utils/compose-utils";
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 
-export default class Icon extends React.Component<Props>{
-
-  render() {
-    const FontAwesomeIcon = style(_FontAwesomeIcon)`
-      margin: 0px 4px
-    `
-    return (
-      <FontAwesomeIcon {...this.props} />
-    )
-  }
+export interface IconProps extends CommonProps<Object> { 
+  icon?: string;
+  test?: string;
 }
+
+export default class Icon extends React.Component<IconProps> {
+  render() {
+    console.log(this.props.test);
+    return <FontAwesomeIcon {...Object.assign({ icon: "stroopwafel" }, this.props as any)} />;
+  }
+};
