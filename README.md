@@ -73,29 +73,85 @@ export default {
 
 ```js
 // `theme.js` 配置文件
-export default {
-  default: {
-    primaryColor: '#000'，
-    accentColor: '#666',
-    baseBorderRadius: '5px',
-    basePadding: '10px',
-    baseFontSize: '0.8rem',
-  },
-  blue: {
-    primaryColor: '#4285F4',
-    accentColor: '#FBBC05',
-  },
-  green: {
-    primaryColor: '#34A853',
+const myThemeOne = {
+  baseColor: {
+    primaryColor: '#4285F4'，
     accentColor: '#EA4335',
+    contrast: '12',
+  },
+  general: {
+    fontSize: '0.8rem',
+  },
+  button: {
+    customColor: '', // to cover baseColor
+    borderRadius: '5px',
+    padding: '10px',
+    fontSize: '0.8rem', // to cover general fontSize
+  }, 
+  fontSize: {
+    s: '0.4rem',
+    m: '0.8rem',
+    l: '1.2rem',
   }
+  input: {
+    ...
+  }
+}
+
+const myThemeTwo = {
+  baseColor: {
+    primaryColor: '#42a583',
+    accentColor: '#f2ca00',
+  },
+  general: {
+    fontSize: '1.0rem',
+    fontFamily: 'Microsoft YaHei'
+  }
+  ...
+}
+
+export default {
+  myThemeOne,
+  myThemeTwo
 }
 
 // 在运行时动态切换主题
 
-Chon.activeTheme('blue');
-Chon.activeTheme('blue');
+Chon.activeTheme('myThemeOne');
+Chon.activeTheme('myThemeTwo');
 ```
+
+* 使用方式
+
+```js
+import colorScheme from 'chon/colorScheme'
+
+export default class Articel extends React.Component<> {
+  
+  const Title = styled(_Title)`
+	color: ${colorScheme.txtCorDark};
+    background: ${colorScheme.bgColorLight};
+    fontSize: ${themeScheme.fontSize.L};
+  `;
+
+  const Title = styled(_Content)`
+	color: ${colorScheme.txtCorDark};
+    background: ${colorScheme.bgColorLight};
+    fontSize: ${themeScheme.fontSize.S};
+  `;
+
+  render() {
+    return (
+      <div>
+        <Title></Title>
+        <Content></Content>
+      </div>
+    )
+  }
+}
+```
+
+   
 
 - 自定义取色方案
 
