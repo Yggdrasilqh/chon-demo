@@ -1,8 +1,6 @@
 import * as React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CommonProps } from "../common/common-props";
-import { switchLayout } from "../utils/compose-utils";
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 
 export interface IconProps extends CommonProps<Object> { 

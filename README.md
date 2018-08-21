@@ -148,3 +148,59 @@ class CustomColorScheme extends ChonColorScheme {
 // 激活颜色方案
 Chon.active(CustomColorScheme);
 ```
+
+
+
+## 实现可布局组件
+
+```js
+// 组件属性
+export interface ButtonProps extends CommonProps<ButtonLayoutProps> {
+  loading?: boolean;
+}
+
+// 布局（子组件）申明
+export interface ButtonLayoutProps {
+  Text: LayoutElement<TextProps>;
+  Icon: LayoutElement<IconProps>;
+}
+
+export default class Button extends React.Component<ButtonProps, any> {
+
+  // 子组件实现
+  static Icon = (props: IconProps) => React.createElement(_Icon, props);
+  static Text = (props: TextProps) => React.createElement(_Text, props);
+
+  // 定义基本layout
+  defaultLayout: LayoutMapping<ButtonLayoutProps> = {
+    one: ({ Icon, Text }: ButtonLayoutProps) => {
+      return (
+        <>
+          <Icon />
+          <Text>this is default button</Text>
+        </>
+      )
+    },
+    tow: ({ Icon, Text }: ButtonLayoutProps) => {
+      return (
+        <>
+          <Text>this is a confused button</Text>
+          <Icon />
+        </>
+      )
+    },
+  }
+
+  render() {
+    let { props: {layout, loading}, compose } = this;
+    let { Icon, Text } = Button;
+    // 组合组件
+    const product = compose<ButtonLayoutProps>({Icon ,Text}, layout, this.defaultLayout)
+    
+    return (
+      <button className='mf-button' onClick={this.handleClick}>{product}</button>
+    );
+  }
+};
+
+```

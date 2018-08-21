@@ -1,3 +1,9 @@
-export type LayoutMapping = {[p: string] : any}
+import { LayoutDefine } from "./common/common-props";
 
-export type LayoutElement<T> = (props: T) => React.ReactElement<T>
+export type LayoutMapping<T> = {[p: string] : any}
+
+export type LayoutElement<T> = (props: T, children?: React.ReactNode[]) => React.ReactElement<T>
+
+// export abstract class Layout<T> {
+//   compose(keyof T): any;
+// }

@@ -1,23 +1,24 @@
 import * as React from 'react';
-import { CommonProps } from "../common/common-props";
+import { CommonProps, LayoutDefine } from '../common/common-props';
 import _Text, { TextProps } from './text';
 import _Icon, { IconProps } from './icon';
-import { switchLayout } from '../utils/compose-utils';
 import './styles/index.less'
-import style from 'styled-components';
-import { HTMLAttributes } from 'react';
-import { LayoutElement } from '../layout';
+import { LayoutElement, LayoutMapping } from '../layout';
+import { compose } from '../utils/compose-utils';
 
 export interface ButtonLayoutProps {
   Text: LayoutElement<TextProps>;
   Icon: LayoutElement<IconProps>;
 }
 
-export interface ButtonProps extends CommonProps<ButtonLayoutProps> {
+export interface ButtonProps extends CommonProps<ButtonLayoutProps>{
   loading?: boolean;
 }
 
 export default class Button extends React.Component<ButtonProps, any> {
+
+  static Icon = (props: IconProps, children: React.ReactNode[]) => React.createElement(_Icon, props);
+  static Text = (props: TextProps, children: React.ReactNode[]) => React.createElement(_Text, props);
 
   handleClick: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement> = e => {
     const { onClick } = this.props;
@@ -26,20 +27,33 @@ export default class Button extends React.Component<ButtonProps, any> {
     }
   }
 
-  compose(): React.ReactChild {
-    let { layout, children, loading } = this.props;
-    const Icon = (props: IconProps) => React.createElement(_Icon, props);
-    const Text = (props: TextProps) => React.createElement(_Text, props, loading ? 'loading...' : children);
-    if (!layout) {
-      layout = () => <><Icon /><Text /></>
-    }
-    return switchLayout(layout)({ Icon, Text });
+  defaultLayout: LayoutMapping<ButtonLayoutProps> = {
+    default: ({ Icon, Text }: ButtonLayoutProps) => {
+      return (
+        <>
+          <Icon />
+          <Text>this is default button</Text>
+        </>
+      )
+    },
+    leftIcon: ({ Icon, Text }: ButtonLayoutProps) => {
+      return (
+        <>
+          <Text>this is default button two</Text>
+          <Icon />
+        </>
+      )
+    },
   }
 
   render() {
-    const { loading } = this.props;
+    let { props: {layout, children, loading} } = this;
+    let { Icon, Text } = Button;
+    const component = compose<ButtonLayoutProps>({Icon ,Text}, this.defaultLayout, layout)
+    console.log();
+    
     return (
-      <button className='mf-button' onClick={this.handleClick}>{this.compose()}</button>
+      <button className='mf-button' onClick={this.handleClick}>{component}</button>
     );
   }
 };

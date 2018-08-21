@@ -29,7 +29,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <Button layout={buttonLayout} onClick={this.changeLoading} loading={this.buttonLoading}>this is a Button</Button>
+        <Button onClick={this.changeLoading} loading={this.buttonLoading}>this is a Button</Button>
       </div>
     );
   }
