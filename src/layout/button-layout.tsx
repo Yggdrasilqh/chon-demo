@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { ButtonLayoutProps } from '../component/button/button';
+import { ButtonLayoutProps, ButtonProps } from '../component/button/button';
 import { LayoutMapping } from '../component/layout';
+import { Component } from 'react';
 
-const buttonLayouts: LayoutMapping = {
+const buttonLayouts: LayoutMapping<ButtonLayoutProps> = {
   leftIcon: ({ Icon, Text }: ButtonLayoutProps) => {
     return (
       <>
@@ -10,6 +11,13 @@ const buttonLayouts: LayoutMapping = {
         <Text />
       </>
     )
+  }
+}
+
+export class ButtonLayoutsClass extends React.Component<ButtonLayoutProps> {
+  compose() {
+    const { Icon, Text } = this.props
+    return (<><Icon /><Text>this is class layout</Text></>)
   }
 }
 
